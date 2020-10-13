@@ -6,8 +6,6 @@ using UniRx;
 
 public class GeometryObjectModel : MonoBehaviour
 {
-    public event Action OnRayHit;
-
     [SerializeField] private GameData _gameData;
     [SerializeField] private GeometryObjectData _geometryObjectData;
     [SerializeField] private Renderer _renderer;
@@ -22,15 +20,11 @@ public class GeometryObjectModel : MonoBehaviour
     {
         //initialization
         _observableTime = _gameData.ObservableTime;
-        _clickData = _geometryObjectData.GetClickData();
+        _clickData = _geometryObjectData.GetClickData(); //TODO: LAZY INITIALIZATION
 
         //change the color of our object every (_observableTime) seconds
         Observable.FromCoroutine(SetRandomColorByTime).Repeat().Subscribe();
     }
-
-    private void OnEnable() => OnRayHit += HandleRayHit;
-
-    private void OnDisable() => OnRayHit -= HandleRayHit;
 
     private IEnumerator SetRandomColorByTime()
     {
@@ -50,7 +44,7 @@ public class GeometryObjectModel : MonoBehaviour
         SetColor(color);
     }
 
-    private void HandleRayHit()
+    public void HandleRayHit()
     {
         _clickCount++;
         if (_clickData == null)
