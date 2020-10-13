@@ -13,7 +13,6 @@ public class GeometryObjectModel : MonoBehaviour
 
     private int _clickCount = 0;
     private int _observableTime;
-    private Color _objectColor = Color.white;
     private List<ClickColorData> _clickData;
 
     private void Awake() 
@@ -32,11 +31,8 @@ public class GeometryObjectModel : MonoBehaviour
         yield return new WaitForSeconds(_observableTime);
     }
 
-    private void SetColor(Color color)
-    {
-        _objectColor = color;
+    private void SetColor(Color color) =>
         _renderer.material.SetColor("_Color", color);
-    }
 
     private void SetRandomColor()
     {
