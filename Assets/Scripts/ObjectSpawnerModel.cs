@@ -9,6 +9,7 @@ public class ObjectSpawnerModel : MonoBehaviour
     private List<string> _objectNames;
     private string _bundlesPath;
     private Object _cachedObject;
+
     private void OnEnable() => RayCastController.OnRayHitEmpty += HandleRayHitEmpty;
     private void OnDisable() => RayCastController.OnRayHitEmpty -= HandleRayHitEmpty;
 
@@ -17,13 +18,14 @@ public class ObjectSpawnerModel : MonoBehaviour
         _objectNames = _objectSpawnerData.GetData();
         _bundlesPath = _objectSpawnerData.BundlesPath;
     } 
+
     private void HandleRayHitEmpty(Vector3 point)
     {
         if (_objectNames.Count < 0)
             return;
         int objectNumber = Random.Range(0, _objectNames.Count); //Get the index of random GeometryObject
-        //GameObject gameObject = (GameObject)Resources.Load("Prefabs/" + _objectNames[objectNumber], typeof(GameObject)); //Load Object From Resources
-        Observable.FromCoroutine(() => GetPrimitiveBundle(_bundlesPath, objectNumber))
+
+        Observable.FromCoroutine(() => GetPrimitiveBundle(_bundlesPath, _objectNames[objectNumber]))
             .DoOnCompleted(() => SpawnObject(_cachedObject as GameObject, point))
             .Subscribe();
     }
@@ -34,18 +36,20 @@ public class ObjectSpawnerModel : MonoBehaviour
         Instantiate(gameObject, point, quaternion);
     }
     
-    private IEnumerator GetPrimitiveBundle(string path, int index)
+    private IEnumerator GetPrimitiveBundle(string path, string name)
     {
         while (!Caching.ready)
             yield return null;
-        string name = _objectNames[index];
+
         string assetBundlePath = Application.dataPath + path + name;
         var assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
         yield return assetBundleRequest;
+
         var assetBundle = assetBundleRequest.assetBundle;
         var prefabRequest = assetBundle.LoadAssetAsync(name);
         yield return prefabRequest;
+
         _cachedObject = prefabRequest.asset;
-        assetBundle.Unload(false);
+        assetBundle.Unload(false); //uncaching assetBundle
     }
 }

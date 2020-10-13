@@ -18,7 +18,7 @@ public class GeometryObjectModel : MonoBehaviour
     {
         //initialization
         _observableTime = _gameData.ObservableTime;
-        _clickData = _geometryObjectData.GetClickData(); //TODO: LAZY INITIALIZATION
+        _clickData = _geometryObjectData.GetClickData();
 
         //change the color of our object every (_observableTime) seconds
         Observable.FromCoroutine(SetRandomColorByTime).Repeat().Subscribe();
@@ -46,8 +46,7 @@ public class GeometryObjectModel : MonoBehaviour
             return;
         foreach (ClickColorData clickColorData in _clickData) 
         {
-            // Если текущее количество кликов у обьекта ObjectType находится в диапазоне MinClicksCount-MaxClicksCount, 
-            // то цвет текущего обьекта меняется на Color
+            //Change the color if current _clickCount is MinClicksCount-MaxClicksCount range
             if((_clickCount >= clickColorData.MinClickCount) &&
                 (_clickCount <= clickColorData.MaxClickCount))
             {
