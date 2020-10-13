@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 3879297354
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: primitives/cube
+      Dependencies: {}
+    Info_1:
+      Name: primitives/cylinder
+      Dependencies: {}
+    Info_2:
+      Name: primitives/sphere
+      Dependencies: {}

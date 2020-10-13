@@ -5,8 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Object Spawner Data", menuName = "GameData/Object Spawner Data", order = 51)]
 public class ObjectSpawnerData : ScriptableObject
 {
-    [SerializeField] private string _fileName = @"Resources/GeometryObjects.json";
+    [SerializeField] private string _fileName = @"GeometryObjects.json";
+    [SerializeField] private string _bundlesPath = @"/Resources/AssetBundles/primitives/";
 
+    public string BundlesPath{ get => _bundlesPath; }
     public List<string> GetData()
     {
         List<string> data = new List<string>();
@@ -20,6 +22,8 @@ public class ObjectSpawnerData : ScriptableObject
 
         return data;
     }
+
+     
 }
 
 public class ObjectSpawnerName
